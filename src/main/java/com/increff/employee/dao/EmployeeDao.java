@@ -44,8 +44,7 @@ public class EmployeeDao extends AbstractDao {
 		return query.getResultList();
 	}
 
-	public void update(EmployeePojo p) {
-	}
+	public void update(EmployeePojo p) {}
 
 
 
