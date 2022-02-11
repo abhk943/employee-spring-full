@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class DbConfig {
 
 	public static final String PACKAGE_POJO = "com.increff.employee.pojo";
-	
+
 	@Value("${jdbc.driverClassName}")
 	private String jdbcDriver;
 	@Value("${jdbc.url}")
@@ -34,11 +34,12 @@ public class DbConfig {
 	private String hibernateShowSql;
 	@Value("${hibernate.hbm2ddl.auto}")
 	private String hibernateHbm2ddl;
-	
+
 
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {
-//		logger.info("jdbcDriver: " + jdbcDriver + ", jdbcUrl: " + jdbcUrl + ", jdbcUsername: " + jdbcUsername);
+		// logger.info("jdbcDriver: " + jdbcDriver + ", jdbcUrl: " + jdbcUrl + ", jdbcUsername: " +
+		// jdbcUsername);
 		BasicDataSource bean = new BasicDataSource();
 		bean.setDriverClassName(jdbcDriver);
 		bean.setUrl(jdbcUrl);
@@ -46,7 +47,7 @@ public class DbConfig {
 		bean.setPassword(jdbcPassword);
 		bean.setInitialSize(2);
 		bean.setDefaultAutoCommit(false);
-		//bean.setMaxTotal(10);
+		// bean.setMaxTotal(10);
 		bean.setMinIdle(2);
 		bean.setValidationQuery("Select 1");
 		bean.setTestWhileIdle(true);
@@ -57,7 +58,8 @@ public class DbConfig {
 	@Bean(name = "entityManagerFactory")
 	@Autowired
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-		//logger.info("hibernateDialect: " + jdbcDriver + ", hibernateHbm2ddl: " + hibernateHbm2ddl);
+		// logger.info("hibernateDialect: " + jdbcDriver + ", hibernateHbm2ddl: " +
+		// hibernateHbm2ddl);
 		LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
 		bean.setDataSource(dataSource);
 		bean.setPackagesToScan(PACKAGE_POJO);
@@ -66,12 +68,12 @@ public class DbConfig {
 		Properties jpaProperties = new Properties();
 		jpaProperties.put("hibernate.dialect", hibernateDialect);
 		jpaProperties.put("hibernate.show_sql", hibernateShowSql);
-		jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
+		// jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
 		jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
 		bean.setJpaProperties(jpaProperties);
 		return bean;
 	}
-	
+
 	@Bean(name = "transactionManager")
 	@Autowired
 	public JpaTransactionManager transactionManager(LocalContainerEntityManagerFactoryBean emf) {
