@@ -1,16 +1,8 @@
-package com.increff.employee.pojo;
+package com.increff.employee.model;
 
-import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.validation.constraints.Min;
+public class InventoryForm {
 
-@Entity
-public class InventoryPojo implements Serializable {
-
-    @Id
     private Integer id;
-    @Min(value = 0, message = "Not enough quantity in Inventory")
     private Integer quantity;
 
     public Integer getId() {
@@ -28,5 +20,6 @@ public class InventoryPojo implements Serializable {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
 
 }

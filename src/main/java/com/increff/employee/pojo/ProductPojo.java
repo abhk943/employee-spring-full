@@ -19,7 +19,7 @@ public class ProductPojo {
     // @JoinColumn(name = "brand_category", referencedColumnName = "id", nullable = false)
     private Integer brand_category;
     private String name;
-    private Integer mrp;
+    private Double mrp;
 
     // @ManyToOne
     // @JoinColumn(name = "fk_brandPojo")
@@ -57,11 +57,11 @@ public class ProductPojo {
         this.name = name;
     }
 
-    public Integer getMrp() {
+    public Double getMrp() {
         return this.mrp;
     }
 
-    public void setMrp(Integer mrp) {
+    public void setMrp(Double mrp) {
         this.mrp = mrp;
     }
 
