@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class EmployeePojo {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
 	private int age;
