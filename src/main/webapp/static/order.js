@@ -41,6 +41,16 @@ function getOrderItemList() {
         },
         error: handleAjaxError
     });
+} function getOrderItemListByOrderId(orderId) {
+    var url = getOrderItemUrl() + "/orderId/" + orderId;
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function (data) {
+            displayOrderItemList(data);
+        },
+        error: handleAjaxError
+    });
 }
 
 function deleteOrderItem(id) {
@@ -60,9 +70,10 @@ function deleteOrderItem(id) {
 
 function displayOrderItemList(data) {
     // $tbody.appendChild();
+    console.log(data)
     for (var i in data) {
         var e = data[i];
-        var tbody = document.getElementById('collapsed-order-' + e.orderId + '-display').querySelector("table").querySelector("tbody")
+        var tbody = document.getElementById('collapsed-order-' + e.orderId + '-display').querySelector("#order-item-table").querySelector("#order-item-table-tbody");
         tbody.innerHTML = "";
     }
     for (var i in data) {
@@ -80,6 +91,11 @@ function displayOrderItemList(data) {
         var tbody = document.getElementById('collapsed-order-' + e.orderId + '-display').querySelector("table").querySelector("tbody")
         tbody.insertAdjacentHTML('beforeend', rowHtml)
     }
+    // $("table").each(function (i, v) {
+    //     if ($(this).find("tbody").html().trim().length === 0) {
+    //         $(this).hide()
+    //     }
+    // })
 }
 function getOrderUrl() {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -108,7 +124,9 @@ function addOrder(event) {
 
     return false;
 }
-
+function collapseDetails(orderId) {
+    $('#collapsed-order-' + orderId).collapse("toggle");
+}
 
 
 function getOrderList() {
@@ -135,7 +153,17 @@ function deleteOrder(id) {
         error: handleAjaxError
     });
 }
-
+function sendOrder(id) {
+    var url = getOrderUrl() + "/sendOrder/" + id;
+    $.ajax({
+        url: url,
+        type: 'PUT',
+        success: function (data) {
+            getOrderList();
+        },
+        error: handleAjaxError
+    });
+}
 //UI DISPLAY METHODS
 
 function displayOrderList(data) {
@@ -145,11 +173,13 @@ function displayOrderList(data) {
     for (var i in data) {
         var e = data[i];
         var timeStr = new Date(e.time).toLocaleString();
-        if (e.complete) {
+        console.log(e.complete)
+        if (e.complete == 1) {
             buttonColor = 'btn btn-success';
+            // $('#' + e.id + '').find('*').attr('disabled', true);
         }
         else {
-            buttonColor = 'btn btn-danger';
+            buttonColor = 'btn btn-warning';
         }
         orderItemContent = `<form class="form-inline" id="order-form">
         <div class="form-group">
@@ -178,32 +208,47 @@ function displayOrderList(data) {
         <button type="button" class="btn btn-primary" id="refresh-order-item">Refresh</button>
 				</form>`
         collapsableContent = `<div class="row">
-            
-                    <button type="button" class="`+ buttonColor + `" data-toggle="collapse" data-target="#collapsed-order-` + e.id + `">
-                    `+ 'OrderId: ' + e.id + ' | ' + timeStr + `
-                    </button>
-                    <div id="collapsed-order-`+ e.id + `" class="collapse">
-                      `+ orderItemContent + `  
-                      <div id="collapsed-order-`+ e.id + `-display" > 
-                        <table class="table table-striped" id="order-item-table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Product Id</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Selling Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                      </div>
-                    </div>
-                </div>`
-
+            <button type="button" class="btn btn-danger" onClick="deleteOrder(` + e.id + `)">
+            Delete Order</button>
+            <button type="button" class="btn btn-primary" onClick="sendOrder(` + e.id + `)">
+            Send Order</button>
+            <button type="button" class="`+ buttonColor + `" onClick="collapseDetails(` + e.id + `)" >
+            `+ 'OrderId: ' + e.id + ' | ' + timeStr + `
+            </button>
+            <div id="collapsed-order-`+ e.id + `" class="collapse">
+                `+ orderItemContent + `  
+                <div id="collapsed-order-`+ e.id + `-display" > 
+                <table class="table table-striped" id="order-item-table">
+                    <thead >
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Product Id</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Selling Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-item-table-tbody">
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>`
         tbody.insertAdjacentHTML('beforeend', collapsableContent);
+
+        // $('#collapsed-order-' + e.id).click(getOrderItemListByOrderId(e.id));
+
+        // if (e.complete == 1) {
+        //     $('#' + e.id + '').find('*').attr('disabled', true);
+        // }
         // $tbody.append(row);
     }
+    $('.collapse').on('show.bs.collapse', function (e) {
+        console.log(e.target.id);
+        var orderId = e.target.id.split('-').at(-1);
+        console.log(orderId);
+        getOrderItemListByOrderId(orderId);
+    });
+    // getOrderItemList();
 }
 
 
@@ -213,10 +258,16 @@ function init() {
     $('#add-order').click(addOrder);
     $('#refresh-data').click(getOrderList);
     // $('#add-order-item').click(addOrderItem);
-    $('#refresh-order-item').click(getOrderItemList);
+    // $('#refresh-order-item').click(getOrderItemList);
+    // $('#collapsed-order-' + e.id).on('shown.bs.collapse', function () {
+    //     getOrderItemListByOrderId(e.id);
+    // });
 }
 
 $(document).ready(init);
 $(document).ready(getOrderList);
-$(document).ready(getOrderItemList);
+// $('.collapse').on('show.bs.collapse', function (e) {
+//     console.log(e.target.id);
+// });
+// $(document).ready(getOrderItemList);
 

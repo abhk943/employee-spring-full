@@ -34,9 +34,10 @@ public class LoginController {
 	private UserService service;
 	@Autowired
 	private InfoData info;
-	
+
 	@ApiOperation(value = "Logs in a user")
-	@RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	@RequestMapping(path = "/session/login", method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
 		UserPojo p = service.get(f.getEmail());
 		boolean authenticated = (p != null && Objects.equals(p.getPassword(), f.getPassword()));
@@ -76,8 +77,8 @@ public class LoginController {
 		// you can add more roles if required
 
 		// Create Authentication
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,
-				authorities);
+		UsernamePasswordAuthenticationToken token =
+				new UsernamePasswordAuthenticationToken(principal, null, authorities);
 		return token;
 	}
 

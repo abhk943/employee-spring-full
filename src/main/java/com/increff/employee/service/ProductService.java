@@ -20,6 +20,10 @@ public class ProductService {
     @Autowired
     private BrandDao brandDao;
 
+    @Autowired
+    private InventoryService inventoryService;
+
+
     @Transactional(rollbackOn = ApiException.class)
     public void add(ProductPojo p) throws ApiException {
         if (brandDao.select(p.getBrand_category()) == null) {
@@ -34,8 +38,16 @@ public class ProductService {
 
     @Transactional
     public void delete(int id) {
+        inventoryService.delete(id);
         dao.delete(id);
+        // orderItemDao.deleteFromProductId(id);
     }
+
+    @Transactional
+    public void deleteFromBrandId(int brandId) {
+        dao.deleteFromBrandId(brandId);
+    }
+
 
     @Transactional(rollbackOn = ApiException.class)
     public ProductPojo get(int id) throws ApiException {
@@ -72,5 +84,9 @@ public class ProductService {
 
     protected static void normalize(ProductPojo p) {
         p.setName(StringUtil.toLowerCase(p.getName()));
+    }
+
+    public List<ProductPojo> selectFromBrandId(int id) {
+        return dao.selectFromBrandId(id);
     }
 }

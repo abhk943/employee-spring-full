@@ -16,7 +16,11 @@ import com.increff.employee.pojo.OrderItemPojo;
 public class OrderItemDao extends AbstractDao {
 
     private static String delete_id = "delete from OrderItemPojo p where id=:id";
+    private static String DELETE_FROM_PRODUCT_ID =
+            "delete from OrderItemPojo p where productId=:productId";
     private static String select_id = "select p from OrderItemPojo p where id=:id";
+    private static final String SELECT_BY_ORDER_ID =
+            "select p from OrderItemPojo p where orderId=:orderId";
     private static String select_all = "select p from OrderItemPojo p";
 
     @PersistenceContext
@@ -33,6 +37,12 @@ public class OrderItemDao extends AbstractDao {
         return query.executeUpdate();
     }
 
+    public int deleteFromProductId(int productId) {
+        Query query = em.createQuery(DELETE_FROM_PRODUCT_ID);
+        query.setParameter("productId", productId);
+        return query.executeUpdate();
+    }
+
     public OrderItemPojo select(int id) {
         TypedQuery<OrderItemPojo> query = getQuery(select_id, OrderItemPojo.class);
         query.setParameter("id", id);
@@ -45,6 +55,12 @@ public class OrderItemDao extends AbstractDao {
     }
 
     public void update(OrderItemPojo p) {}
+
+    public List<OrderItemPojo> getByOrderId(int orderId) {
+        TypedQuery<OrderItemPojo> query = getQuery(SELECT_BY_ORDER_ID, OrderItemPojo.class);
+        query.setParameter("orderId", orderId);
+        return query.getResultList();
+    }
 
 
 

@@ -13,30 +13,30 @@ public class OrderPojo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "port_gen")
-    private int id;
+    private Integer id;
 
     private Long time;
 
-    private Boolean complete;
+    private Integer complete;
 
     public OrderPojo() {
         this.time = new Date().getTime();
-        this.complete = false;
+        this.complete = 0;
     }
 
-    public Boolean getComplete() {
+    public Integer getComplete() {
         return complete;
     }
 
-    public void setComplete(Boolean complete) {
+    public void setComplete(Integer complete) {
         this.complete = complete;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

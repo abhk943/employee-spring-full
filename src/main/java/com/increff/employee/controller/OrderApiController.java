@@ -2,7 +2,7 @@ package com.increff.employee.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +40,23 @@ public class OrderApiController {
         service.delete(id);
     }
 
+    @ApiOperation(value = "Deletes and order")
+    @RequestMapping(path = "/api/order/sendOrder/{id}", method = RequestMethod.PUT)
+    // /api/1
+    public void sendOrder(@PathVariable int id) throws ApiException {
+        OrderPojo p = service.get(id);
+        Logger.getLogger(OrderApiController.class).info(p.getId());
+        Logger.getLogger(OrderApiController.class).info(p.getComplete());
+        Logger.getLogger(OrderApiController.class).info(p.getTime());
+        p.setComplete(1);
+        service.update(id, p);
+        p = service.get(id);
+        Logger.getLogger(OrderApiController.class).info(p.getId());
+        Logger.getLogger(OrderApiController.class).info(p.getComplete());
+        Logger.getLogger(OrderApiController.class).info(p.getTime());
+
+    }
+
     @ApiOperation(value = "Gets an order by ID")
     @RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
     public OrderForm get(@PathVariable int id) throws ApiException {
@@ -70,6 +87,7 @@ public class OrderApiController {
         OrderForm d = new OrderForm();
         d.setTime(p.getTime());
         d.setId(p.getId());
+        d.setComplete(p.getComplete());
         return d;
     }
 
@@ -77,6 +95,7 @@ public class OrderApiController {
         OrderPojo p = new OrderPojo();
         p.setTime(f.getTime());
         p.setId(f.getId());
+        p.setComplete(f.getComplete());
         return p;
     }
 

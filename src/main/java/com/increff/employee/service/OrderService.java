@@ -40,6 +40,7 @@ public class OrderService {
     public void update(int id, OrderPojo p) throws ApiException {
         OrderPojo ex = getCheck(id);
         ex.setTime(p.getTime());
+        ex.setComplete(p.getComplete());
         dao.update(ex);
     }
 

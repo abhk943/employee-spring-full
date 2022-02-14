@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.increff.employee.dao.BrandDao;
 import com.increff.employee.pojo.BrandPojo;
+import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.util.StringUtil;
 
 @Service
@@ -15,6 +16,9 @@ public class BrandService {
 
     @Autowired
     private BrandDao dao;
+
+    @Autowired
+    private ProductService productService;
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(BrandPojo p) throws ApiException {
@@ -28,6 +32,10 @@ public class BrandService {
     @Transactional
     public void delete(int id) {
         dao.delete(id);
+        List<ProductPojo> productPojos = productService.selectFromBrandId(id);
+        for (ProductPojo p : productPojos) {
+            productService.delete(p.getId());
+        }
     }
 
     @Transactional(rollbackOn = ApiException.class)

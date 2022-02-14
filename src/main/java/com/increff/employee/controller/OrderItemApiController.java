@@ -48,6 +48,17 @@ public class OrderItemApiController {
         return convert(p);
     }
 
+    @ApiOperation(value = "Gets an orderItem by ID")
+    @RequestMapping(path = "/api/orderItem/orderId/{id}", method = RequestMethod.GET)
+    public List<OrderItemData> getByOrderId(@PathVariable int id) throws ApiException {
+        List<OrderItemPojo> orderItemPojos = service.getByOrderId(id);
+        List<OrderItemData> list2 = new ArrayList<OrderItemData>();
+        for (OrderItemPojo p : orderItemPojos) {
+            list2.add(convert(p));
+        }
+        return list2;
+    }
+
     @ApiOperation(value = "Gets list of all employees")
     @RequestMapping(path = "/api/orderItem", method = RequestMethod.GET)
     public List<OrderItemData> getAll() {

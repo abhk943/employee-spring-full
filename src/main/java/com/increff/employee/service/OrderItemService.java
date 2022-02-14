@@ -46,6 +46,16 @@ public class OrderItemService {
         dao.delete(id);
     }
 
+    @Transactional
+    public void deleteFromProductId(int productId) {
+        dao.deleteFromProductId(productId);
+    }
+
+    @Transactional
+    public List<OrderItemPojo> getByOrderId(int productId) {
+        return dao.getByOrderId(productId);
+    }
+
     @Transactional(rollbackOn = ApiException.class)
     public OrderItemPojo get(int id) throws ApiException {
         return getCheck(id);

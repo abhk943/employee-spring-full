@@ -5,17 +5,17 @@ public class OrderForm {
 
     private Integer id;
     private Long time;
-    private Boolean complete;
+    private Integer complete;
 
     public Integer getId() {
         return id;
     }
 
-    public Boolean getComplete() {
+    public Integer getComplete() {
         return complete;
     }
 
-    public void setComplete(Boolean complete) {
+    public void setComplete(Integer complete) {
         this.complete = complete;
     }
 

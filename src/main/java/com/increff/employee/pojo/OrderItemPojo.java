@@ -7,11 +7,11 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-@SequenceGenerator(name = "port_gen", sequenceName = "port_gen", initialValue = 100000)
+@SequenceGenerator(name = "portt_gen", sequenceName = "portt_gen", initialValue = 100000)
 public class OrderItemPojo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "port_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "portt_gen")
     private int id;
 
     private Integer orderId;

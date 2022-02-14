@@ -18,6 +18,11 @@ public class ProductDao extends AbstractDao {
     private static String delete_id = "delete from ProductPojo p where id=:id";
     private static String select_id = "select p from ProductPojo p where id=:id";
     private static String select_all = "select p from ProductPojo p";
+    private static final String SELECT_FROM_BRAND_ID =
+            "select p from ProductPojo p where brand_category=:brandId";
+
+    private static final String DELETE_FROM_BRAND_ID =
+            "delete from ProductPojo p where brand_category=:brandId";
 
     @PersistenceContext
     private EntityManager em;
@@ -37,6 +42,20 @@ public class ProductDao extends AbstractDao {
         TypedQuery<ProductPojo> query = getQuery(select_id, ProductPojo.class);
         query.setParameter("id", id);
         return getSingle(query);
+    }
+
+    public List<ProductPojo> selectFromBrandId(int brandId) {
+        TypedQuery<ProductPojo> query = getQuery(SELECT_FROM_BRAND_ID, ProductPojo.class);
+        query.setParameter("brandId", brandId);
+        return query.getResultList();
+
+    }
+
+    public List<ProductPojo> deleteFromBrandId(int brandId) {
+        TypedQuery<ProductPojo> query = getQuery(DELETE_FROM_BRAND_ID, ProductPojo.class);
+        query.setParameter("brandId", brandId);
+        return query.getResultList();
+
     }
 
 
