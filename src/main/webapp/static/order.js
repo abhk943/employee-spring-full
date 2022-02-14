@@ -53,19 +53,37 @@ function getOrderItemList() {
     });
 }
 
-function deleteOrderItem(id) {
+function deleteOrderItem(id, orderId) {
     var url = getOrderItemUrl() + "/" + id;
 
     $.ajax({
         url: url,
         type: 'DELETE',
         success: function (data) {
-            getOrderItemList();
+            getOrderItemListByOrderId(orderId);
         },
         error: handleAjaxError
     });
 }
-
+function displayEditOrderItem(id) {
+    var url = getOrderItemUrl() + "/" + id;
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function (data) {
+            displayOrderItem(data);
+        },
+        error: handleAjaxError
+    });
+}
+function displayOrderItem(data) {
+    $("#orderItem-edit-form input[name=quantity]").val(data.quantity);
+    $("#orderItem-edit-form input[name=productId]").val(data.productId);
+    $("#orderItem-edit-form input[name=orderId]").val(data.orderId);
+    $("#orderItem-edit-form input[name=sellingPrice]").val(data.sellingPrice);
+    $("#orderItem-edit-form input[name=id]").val(data.id);
+    $('#edit-orderItem-modal').modal('toggle');
+}
 //UI DISPLAY METHODS
 
 function displayOrderItemList(data) {
@@ -78,8 +96,8 @@ function displayOrderItemList(data) {
     }
     for (var i in data) {
         var e = data[i];
-        var buttonHtml = '<button onclick="deleteOrderItem(' + e.id + ')">delete</button>';
-        buttonHtml += ' <button onclick="displayEditOrderItem(' + e.id + ')">edit</button>';
+        var buttonHtml = '<button onclick="deleteOrderItem(' + e.id + ',' + e.orderId + ')">delete</button>';
+        buttonHtml += ' <button onclick="displayEditOrderItem(' + e.id + ',' + e.orderId + ')">edit</button>';
 
         var rowHtml = `<tr>
             <td>`+ e.id + `</td>
@@ -96,6 +114,32 @@ function displayOrderItemList(data) {
     //         $(this).hide()
     //     }
     // })
+}
+function updateOrderItem(event) {
+    $('#edit-orderItem-modal').modal('toggle');
+    //Get the ID
+    var id = $("#orderItem-edit-form input[name=id]").val();
+    var orderId = $("#orderItem-edit-form input[name=orderId]").val();
+    var url = getOrderItemUrl() + "/" + id;
+
+    //Set the values to update
+    var $form = $("#orderItem-edit-form");
+    var json = toJson($form);
+
+    $.ajax({
+        url: url,
+        type: 'PUT',
+        data: json,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        success: function (response) {
+            getOrderItemListByOrderId(orderId);
+        },
+        error: handleAjaxError
+    });
+
+    return false;
 }
 function getOrderUrl() {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -257,6 +301,7 @@ function displayOrderList(data) {
 function init() {
     $('#add-order').click(addOrder);
     $('#refresh-data').click(getOrderList);
+    $('#update-orderItem').click(updateOrderItem);
     // $('#add-order-item').click(addOrderItem);
     // $('#refresh-order-item').click(getOrderItemList);
     // $('#collapsed-order-' + e.id).on('shown.bs.collapse', function () {

@@ -16,7 +16,7 @@ import com.increff.employee.pojo.OrderItemPojo;
 public class OrderItemDao extends AbstractDao {
 
     private static String delete_id = "delete from OrderItemPojo p where id=:id";
-    private static String DELETE_FROM_PRODUCT_ID =
+    private static final String DELETE_BY_PRODUCT_ID =
             "delete from OrderItemPojo p where productId=:productId";
     private static String select_id = "select p from OrderItemPojo p where id=:id";
     private static final String SELECT_BY_ORDER_ID =
@@ -37,8 +37,8 @@ public class OrderItemDao extends AbstractDao {
         return query.executeUpdate();
     }
 
-    public int deleteFromProductId(int productId) {
-        Query query = em.createQuery(DELETE_FROM_PRODUCT_ID);
+    public int deleteByProductId(int productId) {
+        Query query = em.createQuery(DELETE_BY_PRODUCT_ID);
         query.setParameter("productId", productId);
         return query.executeUpdate();
     }

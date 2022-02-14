@@ -47,8 +47,8 @@ public class OrderItemService {
     }
 
     @Transactional
-    public void deleteFromProductId(int productId) {
-        dao.deleteFromProductId(productId);
+    public void deleteByProductId(int productId) {
+        dao.deleteByProductId(productId);
     }
 
     @Transactional

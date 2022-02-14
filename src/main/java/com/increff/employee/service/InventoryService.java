@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.increff.employee.dao.InventoryDao;
-import com.increff.employee.dao.OrderItemDao;
 import com.increff.employee.dao.ProductDao;
 import com.increff.employee.pojo.InventoryPojo;
 
@@ -36,7 +35,7 @@ public class InventoryService {
 
     @Transactional
     public void delete(int id) {
-        orderItemService.deleteFromProductId(id);
+        orderItemService.deleteByProductId(id);
         dao.delete(id);
     }
 
