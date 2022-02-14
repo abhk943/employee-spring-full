@@ -161,7 +161,7 @@ function displayEditProduct(id) {
         url: url,
         type: 'GET',
         success: function (data) {
-            displayProduct(data);
+            displayOrderItem(data);
         },
         error: handleAjaxError
     });
@@ -197,7 +197,7 @@ function displayUploadData() {
     $('#upload-product-modal').modal('toggle');
 }
 
-function displayProduct(data) {
+function displayOrderItem(data) {
     $("#product-edit-form input[name=barcode]").val(data.barcode);
     $("#product-edit-form input[name=brand_category]").val(data.brand_category);
     $("#product-edit-form input[name=name]").val(data.name);
