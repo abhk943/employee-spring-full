@@ -27,7 +27,7 @@ Abhishek Kumar Yadav
 	3.  An order should cannot be created for a product which does not exist :heavy_check_mark:
     
 
-8.  Edit an existing customer order
+8.  Edit an existing customer order :heavy_check_mark:
     
 9.  Download a PDF for a customer invoice (so that it can be printed)
     
